@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경고창 생성기 v1.0</title>
+    <style>
+        /* 닼토님 스타일 레드 헤더 */
+        body { margin: 0; font-family: sans-serif; background-color: #f5f5f5; }
+        .header { background-color: #e53935; color: white; padding: 15px; font-size: 1.2rem; font-weight: bold; }
+        
+        .container { padding: 20px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
+        input, select { width: 100%; padding: 10px; border: none; border-bottom: 1px solid #ccc; background: transparent; outline: none; box-sizing: border-box; }
+        
+        button { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #ccc; background: #e0e0e0; cursor: pointer; font-size: 1rem; }
+        button:active { background: #d0d0d0; }
+
+        /* 실제 튀어나올 경고창 레이어 */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .alert-box {
+            background: white; width: 80%; max-width: 300px; padding: 20px; border-radius: 2px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        /* 다크 테마용 스타일 */
+        .dark-mode { background: #333 !important; color: white !important; }
+
+        .alert-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+        .alert-content { margin-bottom: 20px; color: #555; }
+        .dark-mode .alert-content { color: #ccc; }
+        .alert-buttons { text-align: right; }
+        .alert-buttons span { color: #009688; font-weight: bold; margin-left: 20px; cursor: pointer; }
+        
+        .footer { text-align: center; font-size: 0.8rem; color: #888; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="header">경고창 생성기</div>
+
+<div class="container">
+    <div class="input-group">
+        <label>경고창 제목 :</label>
+        <input type="text" id="titleInput" placeholder="제목을 입력하세요...">
+    </div>
+    <div class="input-group">
+        <label>경고창 내용 :</label>
+        <input type="text" id="contentInput" placeholder="내용을 입력하세요...">
+    </div>
+    <div class="input-group">
+        <label>버튼 1 :</label>
+        <input type="text" id="btn1Input" placeholder="버튼 문구를 입력하세요...">
+    </div>
+    <div class="input-group">
+        <label>경고창 종류 :</label>
+        <select id="themeSelect">
+            <option value="light">DEVICE_DEFAULT_LIGHT</option>
+            <option value="dark">DEVICE_DEFAULT_DARK</option>
+        </select>
+    </div>
+
+    <button onclick="showAlert()">경고창 생성</button>
+    <button onclick="showHelp()">도움말</button>
+</div>
+
+<div class="footer">© 2026 Dark Tornado (Clone), All rights reserved.</div>
+
+<div id="overlay" onclick="hideAlert()">
+    <div class="alert-box" id="alertBox" onclick="event.stopPropagation()">
+        <div class="alert-title" id="alertTitle">제목</div>
+        <div class="alert-content" id="alertContent">내용입니다.</div>
+        <div class="alert-buttons">
+            <span id="alertBtn1" onclick="hideAlert()">확인</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showAlert() {
+        const title = document.getElementById('titleInput').value || "경고!";
+        const content = document.getElementById('contentInput').value || "내용을 입력하세요.";
+        const btn1 = document.getElementById('btn1Input').value || "확인";
+        const theme = document.getElementById('themeSelect').value;
+
+        document.getElementById('alertTitle').innerText = title;
+        document.getElementById('alertContent').innerText = content;
+        document.getElementById('alertBtn1').innerText = btn1;
+
+        const box = document.getElementById('alertBox');
+        if(theme === 'dark') {
+            box.classList.add('dark-mode');
+        } else {
+            box.classList.remove('dark-mode');
+        }
+
+        document.getElementById('overlay').style.display = 'flex';
+    }
+
+    function hideAlert() {
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function showHelp() {
+        alert("제목과 내용을 입력하고 생성 버튼을 누르세요! 캡쳐해서 사용하시면 됩니다. 케켘...");
+    }
+</script>
+
+</body>
+</html>
+
